@@ -7,7 +7,9 @@ export default class Routes {
 
         router.get('/', HomeController.index);
         router.get('/about', HomeController.about);
+        router.get('/books', HomeController.books);
+        router.get('/books/:id', HomeController.show);
         router.get('/contact', HomeController.contact);
         return router;
     }
-}
+}
