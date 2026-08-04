@@ -6,12 +6,14 @@ export class HomeController {
   static index(req: Request, res: Response): void {
     const viewData: { [key: string]: any } = {};
     viewData["title"] = "Home";
+    
     res.render('home/index', {viewData : viewData});
   }
 
   static about(req: Request, res: Response): void {
     const viewData: { [key: string]: any } = {};
     viewData["title"] = "About";
+
     res.render('home/about', {viewData : viewData});
   }
 
@@ -19,6 +21,7 @@ export class HomeController {
     const viewData: { [key: string]: any } = {};
     viewData["title"] = "Books";
     viewData["books"] = books;
+
     res.render('home/books', { viewData : viewData});
   }
 
@@ -44,6 +47,7 @@ export class HomeController {
   static contact(req: Request, res: Response): void {
     const viewData: { [key: string]: any } = {};
     viewData["title"] = "Contact";
+
     res.render('home/contact', {viewData : viewData});
   }
 }
