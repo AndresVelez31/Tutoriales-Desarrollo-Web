@@ -69,7 +69,6 @@ const book = BookService.getBookById(bookId);
           <div class="bg-white rounded-lg shadow-md p-6 mt-8">
             <BookReviews :book-id="book.id" />
           </div>
-
         </div>
       </div>
     </div>

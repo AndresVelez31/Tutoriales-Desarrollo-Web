@@ -11,9 +11,7 @@ const selectedCategory = ref('');
 
 // computed
 const filteredBooks = computed(() =>
-  selectedCategory.value
-    ? books.filter((book) => book.category === selectedCategory.value)
-    : books,
+  selectedCategory.value ? books.filter((book) => book.category === selectedCategory.value) : books,
 );
 
 // functions
@@ -39,11 +37,13 @@ function deleteLastBook() {
           class="inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded hover:bg-blue-700 transition"
           >+ Add Book</RouterLink
         >
-
       </div>
 
       <div class="flex justify-end mb-6">
-        <select v-model="selectedCategory" class="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring focus:border-blue-300">
+        <select
+          v-model="selectedCategory"
+          class="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+        >
           <option value="">All Categories</option>
           <option v-for="category in selectorCategories" :key="category" :value="category">
             {{ category }}
