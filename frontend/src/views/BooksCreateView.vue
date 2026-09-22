@@ -11,17 +11,20 @@ const form = ref({
 });
 const successMessage = ref('');
 
-function submitForm() {
+async function submitForm() {
   const newBook: CreateBookDTO = {
     title: form.value.title,
     category: form.value.category,
     price: form.value.price,
     stock: form.value.stock,
   };
-
-  BookService.createBook(newBook);
+  try {
+    await  BookService.createBook(newBook);
   successMessage.value = 'Book created successfully!';
   form.value = { title: '', category: '', price: 0, stock: 0 };
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
