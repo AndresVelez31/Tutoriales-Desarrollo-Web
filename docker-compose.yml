@@ -1,15 +1,36 @@
 services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-bookstore}
+      MYSQL_USER: ${DB_USER:-bookstore}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-bookstore}
+    # Only reachable from this machine (useful for local development), never from the internet
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
   backend:
     build:
       context: ./backend
-    ports:
-      - "3000:3000"
     environment:
       PORT: 3000
-      SQLITE_PATH: /data/database.sqlite
-      CORS_ORIGIN: "http://35.202.25.247,http://127.0.0.1:8080,http://localhost,http://127.0.0.1,http://localhost:5173"
-    volumes:
-      - backend-data:/data
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-bookstore}
+      DB_USER: ${DB_USER:-bookstore}
+      DB_PASSWORD: ${DB_PASSWORD:-bookstore}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # No public port: the frontend's nginx proxies /api to backend:3000 inside the Docker network
 
   frontend:
     build:
@@ -20,4 +41,4 @@ services:
       - backend
 
 volumes:
-  backend-data:
+  mysql-data:

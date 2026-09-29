@@ -1,4 +1,5 @@
 node_modules
+dist
 coverage
 .git
 .gitignore
@@ -6,3 +7,5 @@ coverage
 test
 .env
 .env.*
+*.sqlite
+*.tsbuildinfo
