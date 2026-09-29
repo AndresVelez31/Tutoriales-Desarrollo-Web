@@ -1,6 +1,7 @@
 services:
   mysql:
     image: mysql:8.4
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: ${DB_NAME:-bookstore}
@@ -12,7 +13,8 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      # Ping over TCP: during first-time init MySQL only listens on its socket, so this waits for the real server
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -20,6 +22,7 @@ services:
   backend:
     build:
       context: ./backend
+    restart: unless-stopped
     environment:
       PORT: 3000
       DB_HOST: mysql
@@ -35,6 +38,7 @@ services:
   frontend:
     build:
       context: ./frontend
+    restart: unless-stopped
     ports:
       - "80:80"
     depends_on:
